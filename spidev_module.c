@@ -595,15 +595,15 @@ SpiDev_get_no_cs(SpiDevObject *self, void *closure)
 }
 
 
-static PyObject
-*SpiDev_set_mode(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_mode(SpiDevObject *self, PyObject *val, void *closure)
 {
 	uint8_t mode, tmp;
 
 	if (val == NULL) {
 		PyErr_SetString(PyExc_TypeError,
 			"Cannot delete attribute");
-		return NULL;
+		return -1;
 	}
 #if PY_MAJOR_VERSION < 3
 	if (PyInt_Check(val)) {
@@ -616,7 +616,7 @@ static PyObject
 		} else {
 			PyErr_SetString(PyExc_TypeError,
 				"The mode attribute must be an integer");
-			Py_RETURN_NONE;
+			return -1;
 		}
 	}
 
@@ -625,35 +625,35 @@ static PyObject
 		PyErr_SetString(PyExc_TypeError,
 			"The mode attribute must be an integer"
 				 "between 0 and 3.");
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	// clean and set CPHA and CPOL bits
 	tmp = ( self->mode & ~(SPI_CPHA | SPI_CPOL) ) | mode ;
 
 	if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;;
 	}
 
 	self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
-static PyObject
-*SpiDev_set_cshigh(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_cshigh(SpiDevObject *self, PyObject *val, void *closure)
 {
 	uint8_t tmp;
 
 	if (val == NULL) {
 		PyErr_SetString(PyExc_TypeError,
 			"Cannot delete attribute");
-		Py_RETURN_NONE;
+		return -1;
 	}
 	else if (!PyBool_Check(val)) {
 		PyErr_SetString(PyExc_TypeError,
 			"The cshigh attribute must be boolean");
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	if (val == Py_True)
@@ -662,28 +662,28 @@ static PyObject
 		tmp = self->mode & ~SPI_CS_HIGH;
 
 	if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
-static PyObject
-*SpiDev_set_lsbfirst(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_lsbfirst(SpiDevObject *self, PyObject *val, void *closure)
 {
 	uint8_t tmp;
 
 	if (val == NULL) {
 		PyErr_SetString(PyExc_TypeError,
 			"Cannot delete attribute");
-		Py_RETURN_NONE;
+		return -1;
 	}
 	else if (!PyBool_Check(val)) {
 		PyErr_SetString(PyExc_TypeError,
 			"The lsbfirst attribute must be boolean");
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	if (val == Py_True)
@@ -692,28 +692,28 @@ static PyObject
 		tmp = self->mode & ~SPI_LSB_FIRST;
 
 	if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
-static PyObject
-*SpiDev_set_3wire(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_3wire(SpiDevObject *self, PyObject *val, void *closure)
 {
 	uint8_t tmp;
 
 	if (val == NULL) {
 		PyErr_SetString(PyExc_TypeError,
 			"Cannot delete attribute");
-		Py_RETURN_NONE;
+		return -1;
 	}
 	else if (!PyBool_Check(val)) {
 		PyErr_SetString(PyExc_TypeError,
 			"The 3wire attribute must be boolean");
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	if (val == Py_True)
@@ -722,28 +722,28 @@ static PyObject
 		tmp = self->mode & ~SPI_3WIRE;
 
 	if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
-static PyObject
-*SpiDev_set_no_cs(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_no_cs(SpiDevObject *self, PyObject *val, void *closure)
 {
         uint8_t tmp;
 
         if (val == NULL) {
                 PyErr_SetString(PyExc_TypeError,
                         "Cannot delete attribute");
-                Py_RETURN_NONE;
+                return -1;
         }
         else if (!PyBool_Check(val)) {
                 PyErr_SetString(PyExc_TypeError,
                         "The no_cs attribute must be boolean");
-                Py_RETURN_NONE;
+                return -1;
         }
 
         if (val == Py_True)
@@ -752,29 +752,29 @@ static PyObject
                 tmp = self->mode & ~SPI_NO_CS;
 
         if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;
 	}
 
         self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
 
-static PyObject
-*SpiDev_set_loop(SpiDevObject *self, PyObject *val, void *closure)
+static int
+SpiDev_set_loop(SpiDevObject *self, PyObject *val, void *closure)
 {
 	uint8_t tmp;
 
 	if (val == NULL) {
 		PyErr_SetString(PyExc_TypeError,
 			"Cannot delete attribute");
-		Py_RETURN_NONE;
+		return -1;
 	}
 	else if (!PyBool_Check(val)) {
 		PyErr_SetString(PyExc_TypeError,
 			"The loop attribute must be boolean");
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	if (val == Py_True)
@@ -783,12 +783,12 @@ static PyObject
 		tmp = self->mode & ~SPI_LOOP;
 
 	if (__spidev_set_mode(self->fd, tmp) == -1){
-		Py_RETURN_NONE;
+		return -1;
 	}
 
 	self->mode = tmp;
 
-	Py_RETURN_NONE;
+	return 0;
 }
 
 static PyObject *
