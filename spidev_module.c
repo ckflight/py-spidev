@@ -252,7 +252,7 @@ SpiDev_xfer(SpiDevObject *self, PyObject *args)
 		return NULL;
 
 	seq = PySequence_Fast(obj, "expected a sequence");
-	len = PySequence_Fast_GET_SIZE(obj);
+	len = PySequence_Fast_GET_SIZE(seq);
 	if (!seq || len <= 0) {
 		PyErr_SetString(PyExc_TypeError, wrmsg_list0);
 		return NULL;
@@ -410,7 +410,7 @@ SpiDev_xfer2(SpiDevObject *self, PyObject *args)
 		return NULL;
 
 	seq = PySequence_Fast(obj, "expected a sequence");
-	len = PySequence_Fast_GET_SIZE(obj);
+	len = PySequence_Fast_GET_SIZE(seq);
 	if (!seq || len <= 0) {
 		PyErr_SetString(PyExc_TypeError, wrmsg_list0);
 		return NULL;
