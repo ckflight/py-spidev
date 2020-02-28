@@ -31,6 +31,8 @@
 #define SPIDEV_MAXPATH 4096
 
 
+
+
 #if PY_MAJOR_VERSION < 3
 #define PyLong_AS_LONG(val) PyInt_AS_LONG(val)
 #define PyLong_AsLong(val) PyInt_AsLong(val)
